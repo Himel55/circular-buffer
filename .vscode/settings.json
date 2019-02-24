@@ -1,0 +1,6 @@
+{
+  "files.associations": {
+    "*.feature.tmpl": "feature",
+    "util_circularbuffer.h": "c"
+  }
+}
