@@ -12,7 +12,8 @@ status_code_t UTIL_CircularBuffer(circular_buffer_t* circular_buffer, uint8_t* a
 
   circular_buffer->array = allocated_mem;
   circular_buffer->front = 0;
-  circular_buffer->rear = (uint32_t) (-item_size);
+  //Push function increments then assigns, so set this up just before overflow 
+  circular_buffer->rear = circular_buffer->array_size - item_size;
   circular_buffer->array_size = allocated_mem_size;
   circular_buffer->item_size = item_size;
   circular_buffer->item_count = 0;
@@ -26,11 +27,11 @@ status_code_t UTIL_CircularBuffer_Push(circular_buffer_t* circular_buffer, const
     return NULL_ARGS;
   }
 
-  circular_buffer->rear = (uint32_t)(circular_buffer->rear + circular_buffer->item_size)%circular_buffer->array_size;
+  circular_buffer->rear = (circular_buffer->rear + circular_buffer->item_size)%circular_buffer->array_size;
   memcpy((void*) &circular_buffer->array[circular_buffer->rear], value, circular_buffer->item_size);
   
   if(circular_buffer->array_size / circular_buffer->item_size == circular_buffer->item_count) {
-    circular_buffer->front = (uint32_t)(circular_buffer->front + circular_buffer->item_size)%circular_buffer->array_size;   
+    circular_buffer->front = (circular_buffer->front + circular_buffer->item_size)%circular_buffer->array_size;   
     return OVERWRITTEN;
   }
 
@@ -49,7 +50,7 @@ status_code_t UTIL_CircularBuffer_Pop(circular_buffer_t* circular_buffer, void* 
   }
 
   memcpy(value, (void*) &circular_buffer->array[circular_buffer->front], circular_buffer->item_size);
-  circular_buffer->front = (uint32_t)(circular_buffer->front + circular_buffer->item_size)%circular_buffer->array_size;
+  circular_buffer->front = (circular_buffer->front + circular_buffer->item_size)%circular_buffer->array_size;
   circular_buffer->item_count--;
 
   return OK;

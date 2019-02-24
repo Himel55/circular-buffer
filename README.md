@@ -1,6 +1,6 @@
 # Circular Buffer
 
-This project implements a generic circular buffer. Upon initialisation the size of the item the buffer will hold is given. The memory which the circular buffer will use and its size is also passed in on initilisation. This gives the client the option to use static or dynamic memory allocation.
+This project implements a generic circular buffer. As part of the initialisation the size of the item the buffer will hold is given. The memory which the circular buffer will use and its size is also passed in on initilisation. This gives the client the option to use static or dynamic memory allocation. The main design goal was to try make the circular buffer flexible in the hope this will bring greater reusability. Some design decisions/restrictions were made to try keep the implementation simple, such as the input memory must be divisible by the item size.
 
 ## Building
 
